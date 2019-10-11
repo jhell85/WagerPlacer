@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use("/auth", AuthController);
 
-const connectDatabase = async (databaseName="fullstackjs-boilerplate", hostname="localhost") => {
+const connectDatabase = async (databaseName="Wager_Placer", hostname="localhost") => {
   const database = await mongoose.connect(
     `mongodb://${hostname}/${databaseName}`,
     {
