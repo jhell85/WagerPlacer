@@ -14,5 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^4.1.2"
+  },
+  "dependencies": {
+    "dotenv": "^8.1.0"
   }
 }

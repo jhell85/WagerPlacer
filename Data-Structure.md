@@ -1,0 +1,24 @@
+1. Bet
+    - name for the bet
+        - string
+        - optional
+    - user that created the bet
+        - user id
+    - user(s) involved in the bet
+        - user id
+    - amount the bet is for
+        - number
+    - odds 
+        - number
+    - league (ex: NFL MLB NBA)
+        - string
+    - time of event
+        - datetime 
+    - home team name
+        - string
+    - home team score
+        - number
+    - away team name
+        - number
+    - away team score
+        - number

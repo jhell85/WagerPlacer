@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const AuthController = require("./controllers/auth.controller");
+const GamesController = require("./controllers/games.controller");
 
 const app = express();
 app.use(cors());
@@ -11,6 +12,7 @@ app.use(morgan("tiny"));
 app.use(express.json());
 
 app.use("/auth", AuthController);
+app.use("/games", GamesController)
 
 const connectDatabase = async (databaseName="Wager_Placer", hostname="localhost") => {
   const database = await mongoose.connect(

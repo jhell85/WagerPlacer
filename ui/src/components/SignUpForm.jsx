@@ -4,7 +4,7 @@ import client from "../api/client";
 
 
 const SignupForm = (props) => {
-  const initialState = {
+    const initialState = {
     email: "",
     password: "",
     passwordConfirm: ""
