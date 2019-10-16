@@ -8,10 +8,16 @@ const getGames = async () => {
             Authorization: `Basic ${authToken}`
         }
     })
-    console.log(data['gameLines'])
     return data['gameLines'].map(game => ({
         game: game.game, 
-        lines: game.lines.map((line) => (line.pointSpreads[line.pointSpreads.length - 1]))
+        lines: game.lines.map((line) => (
+            
+            line.pointSpreads[line.pointSpreads.length - 1])),
+
+        homeReferences: data.references['teamReferences']
+            .filter((team) => team.abbreviation === game.game.homeTeamAbbreviation),
+        awayReferences: data.references['teamReferences']
+        .filter((team) => team.abbreviation === game.game.awayTeamAbbreviation)
     }));
 }
 const router = AsyncRouter()
