@@ -13,13 +13,25 @@ const BetList = () => {
         const response = await client.get("/games")
         setBets(response.data)
     }
+    getBets()
 return (
     <>
     <div>
         {bets.map((bet) =>(
             <div>
-            {bet}
+                {bet.game.id}
+                <div>
+                NFL week {bet.game.week}<br></br>
+                away {bet.game.awayTeamAbbreviation}<br></br>
+                home {bet.game.homeTeamAbbreviation} {bet.lines.map((line) => 
+                  
+                    <>{line.pointSpread.homeSpread}</>
+                    )}
+                
+                </div>
+
             </div>
+            
         ))}
     </div>
     </>
