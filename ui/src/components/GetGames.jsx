@@ -4,41 +4,35 @@ import client from "../api/client";
 
 import "./GetGames.css";
 
-const Bet = (props) => {
-    const { bet } = props;
 
-}
+
 const BetList = () => {
     const [bets, setBets] = useState([]);
+
+
 
     const getBets = async () =>{
         const response = await client.get("/games")
         setBets(response.data)
+    
     }
     useEffect(() => {
         getBets()
     }, [])
 return (
     <>
-    <div>
+    <div className="gameContainer">
         {bets.map((bet) =>(
-            <div> 
-                <div>
+            <div className="game"> 
+                <div className="gameHeader">
                     NFL week {bet.game.week}
                 </div>
                 <div>
-                    away {bet.awayReferences.
-                    map((team) => team.name)}
+                    away {bet.awayReferences.name} 
                 </div>
                 <div>
-                    home {bet.homeReferences.
-                    map((team) => team.name)}  
-                    {bet.lines
-                        .filter((line) => line.pointSpread.gameSegment === "FULL")
-                        .map((line) => (
-                            <span className="homeSpread">{line.pointSpread.homeSpread}</span>
-                        )
-                    )}
+                    home {bet.homeReferences.name} {bet.pointSpread.pointSpread.homeSpread}
+    
                 </div>
 
             </div>
