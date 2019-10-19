@@ -3,26 +3,33 @@ const axios = require("axios");
 const authToken = require("../helpers/apiToken");
 
 const getGames = async () => {
-    const { data } = await axios.get("https://api.mysportsfeeds.com/v2.1/pull/nfl/current/week/7/odds_gamelines.json", {
+    const response = await axios.get("https://api.mysportsfeeds.com/v2.1/pull/nfl/current/week/7/odds_gamelines.json", {
         headers: {
             Authorization: `Basic ${authToken}`
         }
     })
+
+    const data = response.data;
+
+    console.log(response.status)
+    console.log("Data: " + data)
     return data['gameLines']
         .map(gameLine => ({
         game: gameLine.game, 
+
         pointSpread: gameLine.lines[gameLine.lines.length - 1].pointSpreads
-        .filter((pointSpreads) => pointSpreads.pointSpread.gameSegment === "FULL").pop(),
-// //   pointSpreads[pointSpreads.length - 1],
-//         lines: gameLine.lines.map(line => (
-            
-//             line.pointSpreads[line.pointSpreads.length - 1])
-//             // .filter((line) => line.pointSpread.gameSegment === "FULL")
-//             // .map((line) => line.length - 1),
-//             ),
+        .filter((spread) => spread.pointSpread.gameSegment === "FULL").pop(),
+
+        overUnder: gameLine.lines[gameLine.lines.length - 1].overUnders
+        // .filter((overUnder) => overUnder.overUnder.gameSegment === "FULL").pop(),
+        .filter((overUnder) => {
+            // console.log(overUnder)
+            return overUnder.overUnder.gameSegment === "FULL"
+        }).pop(),
 
         homeReferences: data.references['teamReferences']
             .filter((team) => team.abbreviation === gameLine.game.homeTeamAbbreviation).pop(),
+
         awayReferences: data.references['teamReferences']
         .filter((team) => team.abbreviation === gameLine.game.awayTeamAbbreviation).pop()
     }));
