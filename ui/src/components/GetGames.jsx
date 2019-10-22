@@ -11,7 +11,6 @@ const BetList = () => {
 
     const getBets = async () =>{
         const response = await client.get("/games")
-        console.log(response)
         setBets(response.data)
     }
 

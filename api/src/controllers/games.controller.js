@@ -20,6 +20,13 @@ const getGames = async () => {
         pointSpread: gameLine.lines[gameLine.lines.length - 1].pointSpreads
         .filter((spread) => spread.pointSpread.gameSegment === "FULL").pop(),
 
+        moneyLine: gameLine.lines[gameLine.lines.length - 1].moneyLines
+        .filter((moneyLine) => { 
+            console.log(moneyLine)
+            return moneyLine.moneyLine.gameSegment === "FULL"
+        }).pop(),
+
+
         overUnder: gameLine.lines[gameLine.lines.length - 1].overUnders
         // .filter((overUnder) => overUnder.overUnder.gameSegment === "FULL").pop(),
         .filter((overUnder) => {
