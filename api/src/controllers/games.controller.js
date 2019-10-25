@@ -11,8 +11,6 @@ const getGames = async () => {
 
     const data = response.data;
 
-    console.log(response.status)
-    console.log("Data: " + data)
     return data['gameLines']
         .map(gameLine => ({
         game: gameLine.game, 
