@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 const initialState = {
   token: null,
   currentBet: null,
+  confirmBet: null,
 };
 
 const rehydrateState = () => {

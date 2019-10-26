@@ -1,5 +1,6 @@
 import React, { useState, useGlobal } from "reactn";
 import client from "../api/client";
+import { Redirect } from "react-router-dom";
 import NumberFormat from "react-number-format";
 
 const MoneyForm = ({ currentBet }) => {
@@ -8,6 +9,7 @@ const MoneyForm = ({ currentBet }) => {
 
   const [wager, setWager] = useState();
   const teamSide = teamChoice === "home" ? true : false;
+
   const handleSubmit = async e => {
     e.preventDefault();
 
@@ -36,6 +38,7 @@ const MoneyForm = ({ currentBet }) => {
           &nbsp;
         </label>
         <input
+          id="away"
           type="radio"
           name="money"
           value="away"
@@ -52,6 +55,7 @@ const MoneyForm = ({ currentBet }) => {
           {currentBet.homeReferences.city} {currentBet.homeReferences.name}
           &nbsp;
           <input
+            id="home"
             type="radio"
             name="money"
             value="home"
@@ -65,24 +69,24 @@ const MoneyForm = ({ currentBet }) => {
           </strong>
         </div>
         <div>
-        <NumberFormat
-          name="wager"
-          onValueChange={e => setWager(e.floatValue)}
-          value={wager}
-          displayType={"input"}
-          thousandSeparator={true}
-          prefix={"$"}
-          isNumericString={true}
-          placeholder="Wager"
-        />
-        <NumberFormat
-          name="payOut"
-          value={wager * betOdds}
-          displayType={"text"}
-          thousandSeparator={true}
-          prefix={"$"}
-          placeholder="Wager"
-        />
+          <NumberFormat
+            name="wager"
+            onValueChange={e => setWager(e.floatValue)}
+            value={wager}
+            displayType={"input"}
+            thousandSeparator={true}
+            prefix={"$"}
+            isNumericString={true}
+            placeholder="Wager"
+          />
+          <NumberFormat
+            name="payOut"
+            value={wager * betOdds}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={"$"}
+            placeholder="Wager"
+          />
         </div>
         <button>Submit Bet</button>
       </div>
@@ -103,21 +107,21 @@ const SpreadForm = ({ currentBet }) => {
       ? currentBet.overUnder.overUnder.overLine.decimal
       : currentBet.overUnder.overUnder.underLine.decimal;
 
-      const handleSubmit = async e => {
-        e.preventDefault();
-    
-        await client.post("/bets", {
-          homeAway: teamSide,
-          homeReferences: currentBet.homeReferences,
-          awayReferences: currentBet.awayReferences,
-          game: currentBet.game,
-          event_time: currentBet.game.startTime,
-          odds: betOdds,
-          payOut: wager * betOdds,
-          wager: wager,
-          betType: currentBet.pointSpread
-        });
-      };
+  const handleSubmit = async e => {
+    e.preventDefault();
+
+    await client.post("/bets", {
+      homeAway: teamSide,
+      homeReferences: currentBet.homeReferences,
+      awayReferences: currentBet.awayReferences,
+      game: currentBet.game,
+      event_time: currentBet.game.startTime,
+      odds: betOdds,
+      payOut: wager * betOdds,
+      wager: wager,
+      betType: currentBet.pointSpread
+    });
+  };
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -159,24 +163,24 @@ const SpreadForm = ({ currentBet }) => {
           </strong>
         </div>
         <div>
-        <NumberFormat
-          name="wager"
-          onValueChange={e => setWager(e.floatValue)}
-          value={wager}
-          displayType={"input"}
-          thousandSeparator={true}
-          prefix={"$"}
-          isNumericString={true}
-          placeholder="Wager"
-        />
-        <NumberFormat
-          name="payOut"
-          value={wager * betOdds}
-          displayType={"text"}
-          thousandSeparator={true}
-          prefix={"$"}
-          placeholder="Wager"
-        />
+          <NumberFormat
+            name="wager"
+            onValueChange={e => setWager(e.floatValue)}
+            value={wager}
+            displayType={"input"}
+            thousandSeparator={true}
+            prefix={"$"}
+            isNumericString={true}
+            placeholder="Wager"
+          />
+          <NumberFormat
+            name="payOut"
+            value={wager * betOdds}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={"$"}
+            placeholder="Wager"
+          />
         </div>
         <button>Submit Bet</button>
       </div>
@@ -184,11 +188,12 @@ const SpreadForm = ({ currentBet }) => {
   );
 };
 const OverUnderForm = ({ currentBet }) => {
-  const [overUnder, setOverUnder] = useState("home");
+  const [overUnder, setOverUnder] = useState(null);
   const handleOverUnderChange = event => {
     setOverUnder(event.target.value);
   };
-
+  const [confirmBet, setConfirmBet] = useGlobal("confirmBet");
+  const [betSelected, setBetSelected] = useState(false);
   const [wager, setWager] = useState();
 
   const teamSide = overUnder === "home" ? true : false;
@@ -198,86 +203,114 @@ const OverUnderForm = ({ currentBet }) => {
       ? currentBet.overUnder.overUnder.overLine.decimal
       : currentBet.overUnder.overUnder.underLine.decimal;
 
-  // const handlePayOutChange = (wager * betOdds)
+
+  const [submitError, setSubmitError] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
-
-    await client.post("/bets", {
-      homeAway: teamSide,
-      homeReferences: currentBet.homeReferences,
-      awayReferences: currentBet.awayReferences,
-      game: currentBet.game,
-      event_time: currentBet.game.startTime,
-      odds: betOdds,
-      payOut: wager * betOdds,
-      wager: wager,
-      betType: currentBet.overUnder
-    });
+    if (
+      overUnder !== null
+    ) {
+      // await client.post("/bets", {
+      //   homeAway: teamSide,
+      //   homeReferences: currentBet.homeReferences,
+      //   awayReferences: currentBet.awayReferences,
+      //   game: currentBet.game,
+      //   event_time: currentBet.game.startTime,
+      //   odds: betOdds,
+      //   payOut: wager * betOdds,
+      //   wager: wager,
+      //   betType: currentBet.overUnder
+      // });
+      setConfirmBet({
+        homeAway: teamSide,
+        homeReferences: currentBet.homeReferences,
+        awayReferences: currentBet.awayReferences,
+        game: currentBet.game,
+        event_time: currentBet.game.startTime,
+        odds: betOdds,
+        payOut: wager * betOdds,
+        wager: wager,
+        betType: currentBet.overUnder
+      })
+      setBetSelected(true)
+    }
+    else setSubmitError(true);
   };
 
+  console.log(betSelected)
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        {currentBet.awayReferences.city} {currentBet.awayReferences.name}&nbsp;
-        <strong>@</strong>
-        <div></div>
+    <>
+     {betSelected && (
+      <Redirect to="/confirm-bet" />
+    )}
+      <form onSubmit={handleSubmit}>
         <div>
-          {currentBet.homeReferences.city} {currentBet.homeReferences.name}
-        </div>
-        <div>Total points: {currentBet.overUnder.overUnder.overUnder}</div>
-        <div>
+          {currentBet.awayReferences.city} {currentBet.awayReferences.name}
+          &nbsp;
+          <strong>@</strong>
+          <div></div>
+          <div>
+            {currentBet.homeReferences.city} {currentBet.homeReferences.name}
+          </div>
+          <div>Total points: {currentBet.overUnder.overUnder.overUnder}</div>
+          <div>
+            <label>
+              Over{" "}
+              <strong>
+                Odds: {currentBet.overUnder.overUnder.overLine.decimal}
+              </strong>
+            </label>
+            <input
+              id="home"
+              type="radio"
+              name="homeAway"
+              value="home"
+              onChange={handleOverUnderChange}
+              checked={overUnder === "home"}
+            />
+          </div>
           <label>
-            Over{" "}
+            Under
             <strong>
-              Odds: {currentBet.overUnder.overUnder.overLine.decimal}
+              {" "}
+              Odds: {currentBet.overUnder.overUnder.underLine.decimal}
             </strong>
           </label>
           <input
-            type="radio"
+            id="away"
             name="homeAway"
-            value="home"
+            type="radio"
+            value="away"
             onChange={handleOverUnderChange}
-            checked={overUnder === "home"}
+            checked={overUnder === "away"}
+          />
+          {submitError && <em>You must select Over or Under</em>}
+        </div>
+        <div>
+          <NumberFormat
+            name="wager"
+            onValueChange={e => setWager(e.floatValue)}
+            value={wager}
+            displayType={"input"}
+            thousandSeparator={true}
+            prefix={"$"}
+            isNumericString={true}
+            placeholder="Wager"
+          />
+          <NumberFormat
+            name="payOut"
+            value={wager * betOdds}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={"$"}
+            placeholder="Wager"
           />
         </div>
-        <label>
-          Under
-          <strong>
-            {" "}
-            Odds: {currentBet.overUnder.overUnder.underLine.decimal}
-          </strong>
-        </label>
-        <input
-          name="homeAway"
-          type="radio"
-          value="away"
-          onChange={handleOverUnderChange}
-          checked={overUnder === "away"}
-        />
-      </div>
-      <div>
-        <NumberFormat
-          name="wager"
-          onValueChange={e => setWager(e.floatValue)}
-          value={wager}
-          displayType={"input"}
-          thousandSeparator={true}
-          prefix={"$"}
-          isNumericString={true}
-          placeholder="Wager"
-        />
-        <NumberFormat
-          name="payOut"
-          value={wager * betOdds}
-          displayType={"text"}
-          thousandSeparator={true}
-          prefix={"$"}
-          placeholder="Wager"
-        />
-      </div>
-      <button>Submit Bet</button>
-    </form>
+        <button>Submit Bet</button>
+      </form>
+    </>
   );
 };
 
@@ -287,16 +320,7 @@ const CreateBet = () => {
   const [betType, setBetType] = useState("over-under");
   const [wagerAmount, setWagerAmount] = useState(null);
 
-  const handleChange = e => {
-    setWagerAmount({
-      ...wagerAmount,
-      [e.target.name]: e.target.value
-    });
-  };
-  const handleSubmit = async e => {
-    e.preventDefault();
-    await client.post("/bets");
-  };
+  
 
   return (
     <>

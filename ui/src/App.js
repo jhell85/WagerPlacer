@@ -12,6 +12,7 @@ import Logout from "./components/Logout";
 import SignUp from "./pages/SignUp";
 import CreateBet from "./pages/CreateBet";
 import Games from "./pages/Games";
+import ConfirmBet from "./pages/ConfirmBet"
 
 const NavBar = () => {
   const { 0: token } = useGlobal("token");
@@ -75,6 +76,7 @@ function App() {
         <Route path="/sign-up" component={SignUp} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/create-bet" component={CreateBet} />
+        <PrivateRoute path="/confirm-bet" component={ConfirmBet} />
         {/* <Route component={NotFound} /> */}
       </Router>
     </div>
