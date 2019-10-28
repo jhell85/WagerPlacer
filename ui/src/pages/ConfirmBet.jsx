@@ -1,19 +1,92 @@
 import React, { useState, useGlobal } from "reactn";
 import client from "../api/client";
 
-
-
 const ConfirmBetForm = () => {
-  
   const { 0: confirmBet } = useGlobal("confirmBet");
-  
+  console.log(confirmBet);
+  const checkBetType = () => {
+    if (confirmBet.betType.hasOwnProperty("overUnder"))
+      if (confirmBet.homeAway === true)
+        return (
+          <div>
+            <div>
+              total combined points to be over {confirmBet.betType.overUnder}{" "}
+              points
+            </div>
+            <div>
+              wagering: {confirmBet.wager} to win: {confirmBet.payOut}
+            </div>
+          </div>
+        );
+      else
+        return (
+          <div>
+            <div>
+              total combined points to be under {confirmBet.betType.overUnder}{" "}
+              points
+            </div>
+            <div>
+              wagering: {confirmBet.wager} to win: {confirmBet.payOut}
+            </div>
+          </div>
+        );
+    else if (confirmBet.betType.hasOwnProperty("pointSpread"))
+    if (confirmBet.homeAway === true)
+      return (
+        <div>
+          <div>
+            {confirmBet.homeReferences.city} {confirmBet.homeReferences.name} at
+            home {confirmBet.betType.pointSpread.homeSpread}
+          </div>
+          <div>
+            wagering: {confirmBet.wager} to win: {confirmBet.payOut}
+          </div>
+        </div>
+      );
+    else
+      return (
+        <div>
+          <div>
+            {confirmBet.awayReferences.city} {confirmBet.awayReferences.name}{" "}
+            {confirmBet.betType.pointSpread.awaySpread} on the road
+          </div>
+          <div>
+            wagering: {confirmBet.wager} to win: {confirmBet.payOut}
+          </div>
+        </div>
+      );
+    else
+    if(confirmBet.homeAway ===)
+    return (
+      <div>
+        <div>
+          {confirmBet.homeReferences.city} {confirmBet.homeReferences.name} at
+          home 
+        </div>
+        <div>
+          wagering: {confirmBet.wager} to win: {confirmBet.payOut}
+        </div>
+      </div>
+    );
+    else
+      return (
+        <div>
+          <div>
+            {confirmBet.awayReferences.city} {confirmBet.awayReferences.name}{" "}
+             on the road
+          </div>
+          <div>
+            wagering: {confirmBet.wager} to win: {confirmBet.payOut}
+          </div>
+        </div>
+      );
+  };
   return (
-<div>
-    <h1>hello</h1>
     <div>
-      
+      <h1>{checkBetType()}</h1>
+      Confirm bet
+      <div></div>
     </div>
-    </div>
-  )
-}
-export default ConfirmBetForm
+  );
+};
+export default ConfirmBetForm;

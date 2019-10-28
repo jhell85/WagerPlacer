@@ -20,7 +20,6 @@ const getGames = async () => {
 
         moneyLine: gameLine.lines[gameLine.lines.length - 1].moneyLines
         .filter((moneyLine) => { 
-            console.log(moneyLine)
             return moneyLine.moneyLine.gameSegment === "FULL"
         }).pop(),
 
