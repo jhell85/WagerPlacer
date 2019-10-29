@@ -22,6 +22,11 @@ const userSchema = Schema({
     virtuals: true,
   }
 });
+userSchema.virtual("BetCreated", {
+  localField: "_id",
+  foreignField: "creator",
+  ref: "Bet"
+})
 
 userSchema.statics.signUp = async function(email, password) {
   const user = new this();

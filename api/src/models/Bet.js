@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const { Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 const betSchema = Schema(
   {
@@ -29,7 +30,8 @@ const betSchema = Schema(
       type: Date,
       required: true
     },
-    homeAway: { //overUnder true = home or over : false = under or away
+    homeAway: {
+      //overUnder true = home or over : false = under or away
       type: Boolean,
       required: true
     },
@@ -44,8 +46,13 @@ const betSchema = Schema(
     home_score: {
       type: Number
     },
-    away_score: { 
+    away_score: {
       type: Number
+    },
+    creator: {
+      type: ObjectId,
+      ref: "User",
+      required: true
     }
   },
   {
@@ -58,12 +65,13 @@ const betSchema = Schema(
     }
   }
 );
-betSchema.virtual("creator", {
-  localField: "_id",
-  foreignField: "user",
-  ref: "User",
-  justOne: true
-});
+// betSchema.virtual("creator", {
+//   localField: "_id",
+//   foreignField: "user",
+//   ref: "User",
+//   justOne: true
+//   required: true
+// });
 betSchema.virtual("accepter", {
   localField: "_id",
   foreignField: "user",

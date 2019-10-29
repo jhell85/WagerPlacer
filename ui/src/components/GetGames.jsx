@@ -4,7 +4,7 @@ import client from "../api/client";
 
 import "./GetGames.css";
 
-const BetList = () => {
+const GetGames = () => {
     const [bets, setBets] = useState([]);
     const [currentBet, setCurrentBet] = useGlobal("currentBet");
     const [betSelected, setBetSelected] = useState(false);
@@ -51,4 +51,4 @@ const BetList = () => {
         </>
     )
 }
-export default BetList;
+export default GetGames;

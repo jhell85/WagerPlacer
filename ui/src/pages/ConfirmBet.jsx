@@ -1,10 +1,11 @@
 import React, { useState, useGlobal } from "reactn";
 import client from "../api/client";
 
+
 const ConfirmBetForm = () => {
   const { 0: confirmBet } = useGlobal("confirmBet");
-  console.log(confirmBet);
-  const checkBetType = () => {
+  const { 0: token } = useGlobal("token");
+  const betParameters = () => {
     if (confirmBet.betType.hasOwnProperty("overUnder"))
       if (confirmBet.homeAway === true)
         return (
@@ -56,7 +57,7 @@ const ConfirmBetForm = () => {
         </div>
       );
     else
-    if(confirmBet.homeAway ===)
+    if(confirmBet.homeAway === true)
     return (
       <div>
         <div>
@@ -81,11 +82,31 @@ const ConfirmBetForm = () => {
         </div>
       );
   };
+
+  const postBet = async (e) => {
+    e.preventDefault();
+    const { data } = await client.post("/bets", {
+      confirmBet
+    }, {
+      headers: { Authorization: `Bearer ${token}`}
+    });
+
+  };
   return (
     <div>
-      <h1>{checkBetType()}</h1>
-      Confirm bet
-      <div></div>
+
+    <div>
+      <h1>{betParameters()}</h1>
+    </div>
+    <div>
+      <form onSubmit={postBet}>
+        <input
+        type="hidden"
+        value={confirmBet}
+        />
+      <button>Create Bet</button>
+      </form>
+    </div>
     </div>
   );
 };

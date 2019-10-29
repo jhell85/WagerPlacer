@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useGlobal } from "reactn";
 import client from "../api/client";
-import BetList from "../components/GetGames"
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -27,7 +26,6 @@ const Profile = () => {
         <em>{profile.email}</em>
 
       )}
-      <BetList/>
     </div>
   )
 }
