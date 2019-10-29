@@ -27,6 +27,11 @@ userSchema.virtual("BetCreated", {
   foreignField: "creator",
   ref: "Bet"
 })
+userSchema.virtual("BetInvolved", {
+  localField: "_id",
+  foreignField: "accepter",
+  ref: "Bet"
+})
 
 userSchema.statics.signUp = async function(email, password) {
   const user = new this();

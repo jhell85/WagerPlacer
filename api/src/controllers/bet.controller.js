@@ -21,4 +21,12 @@ router.post("/", [jwtMiddleware, handleValidationErrors], async (req, res) => {
   res.status(201).send(bet);
   console.log(bet);
 });
+router.get(
+  "/",
+  async (req, res) => {
+    const bet = await Bet.find().filter()
+  }
+)
+
+
 module.exports = router;

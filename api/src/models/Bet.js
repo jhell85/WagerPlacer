@@ -53,6 +53,10 @@ const betSchema = Schema(
       type: ObjectId,
       ref: "User",
       required: true
+    },
+    accepter: {
+    type: ObjectId,
+    ref: "User",
     }
   },
   {
@@ -72,11 +76,11 @@ const betSchema = Schema(
 //   justOne: true
 //   required: true
 // });
-betSchema.virtual("accepter", {
-  localField: "_id",
-  foreignField: "user",
-  ref: "User"
-});
+// betSchema.virtual("accepter", {
+//   localField: "_id",
+//   foreignField: "user",
+//   ref: "User"
+// });
 
 const Bet = mongoose.model("Bet", betSchema);
 

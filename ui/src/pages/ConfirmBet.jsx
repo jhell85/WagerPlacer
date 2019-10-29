@@ -86,7 +86,8 @@ const ConfirmBetForm = () => {
   const postBet = async (e) => {
     e.preventDefault();
     const { data } = await client.post("/bets", {
-      confirmBet
+      ...confirmBet,
+      [e.target.name]: e.target.value
     }, {
       headers: { Authorization: `Bearer ${token}`}
     });
@@ -100,10 +101,6 @@ const ConfirmBetForm = () => {
     </div>
     <div>
       <form onSubmit={postBet}>
-        <input
-        type="hidden"
-        value={confirmBet}
-        />
       <button>Create Bet</button>
       </form>
     </div>
