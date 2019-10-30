@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useGlobal } from "reactn";
 import client from "../api/client";
+import DisplayCreatorBets from "../components/DisplayBets";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -14,20 +15,22 @@ const Profile = () => {
       });
 
       setProfile(data);
-    }
+    };
 
     getProfile();
   }, [token]);
 
   return (
     <div>
-      <h1>Profile:</h1>
-      {profile && (
-        <em>{profile.email}</em>
-
-      )}
+      <div>
+        <h1>Profile:</h1>
+        {profile && <em>{profile.email}</em>}
+      </div>
+      <div>
+        <DisplayCreatorBets />
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Profile;
