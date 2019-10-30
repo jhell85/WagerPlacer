@@ -13,6 +13,7 @@ import SignUp from "./pages/SignUp";
 import CreateBet from "./pages/CreateBet";
 import Games from "./pages/Games";
 import ConfirmBet from "./pages/ConfirmBet"
+import OpenBets from "./pages/OpenBets";
 
 const NavBar = () => {
   const { 0: token } = useGlobal("token");
@@ -53,7 +54,11 @@ const NavBar = () => {
             <Link to="/games">Games</Link>
           </span>
         )}
-       
+        {token && (
+          <span>
+            <Link to="/open-bets">Open Bets</Link>
+          </span>
+        )}
       {token && (
         <span className="log-out-button">
            <Logout />
@@ -70,6 +75,7 @@ function App() {
     <div className="main-page">
       <Router>
         <NavBar />
+        <Route path="/open-bets" component={OpenBets}/>
         <PrivateRoute path="/games" component={Games} />
         <Route path="/" exact component={Home} />
         <Route path="/login" component={Login} />

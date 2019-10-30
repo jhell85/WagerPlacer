@@ -23,8 +23,13 @@ router.post("/", [jwtMiddleware, handleValidationErrors], async (req, res) => {
 });
 router.get("/creator", [jwtMiddleware], async (req, res) => {
   const bet = await Bet.find({ creator: req.user._id });
-  console.log(bet)
+  // console.log(bet)
   res.send(bet);
 });
+router.get("/", async (req, res) => {
+  const bet = await Bet.find()
+  // console.log(bet)
+  res.send(bet);
+})
 
 module.exports = router;

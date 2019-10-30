@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useGlobal } from "reactn";
+import React, { useState, useEffect } from "reactn";
 import { Redirect } from "react-router-dom";
 import client from "../api/client";
 
-const DisplayCreatorBets = () => {
+const DisplayOpenBets = () => {
+
   const [bets, setBets] = useState([]);
-  const { 0: token } = useGlobal("token");
 
   const getBets = async () => {
-    const response = await client.get("/bets/creator", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await client.get("/bets")
     setBets(response.data);
   };
   useEffect(() => {
@@ -23,4 +21,4 @@ const DisplayCreatorBets = () => {
     </div>
   );
 };
-export default DisplayCreatorBets;
+export default DisplayOpenBets;

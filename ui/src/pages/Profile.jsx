@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useGlobal } from "reactn";
 import client from "../api/client";
-import DisplayCreatorBets from "../components/DisplayBets";
+import DisplayCreatorBets from "../components/DisplayCreatorBets";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
