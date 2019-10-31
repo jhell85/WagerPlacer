@@ -1,0 +1,16 @@
+.forms-button-container{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.form-button{
+  padding: 3px
+}
+.forms{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.error-message{
+  color: red
+}

@@ -3,7 +3,7 @@ const axios = require("axios");
 const authToken = require("../helpers/apiToken");
 
 const getGames = async () => {
-    const response = await axios.get("https://api.mysportsfeeds.com/v2.1/pull/nfl/current/week/7/odds_gamelines.json", {
+    const response = await axios.get("https://api.mysportsfeeds.com/v2.1/pull/nfl/current/week/8/odds_gamelines.json", {
         headers: {
             Authorization: `Basic ${authToken}`
         }

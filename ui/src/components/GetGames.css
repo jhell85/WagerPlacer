@@ -7,6 +7,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    border: 2px solid;
+    border-radius: 5px
 }
 .game{
     padding: 5px

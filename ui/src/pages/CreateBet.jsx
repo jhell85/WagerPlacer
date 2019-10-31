@@ -2,6 +2,7 @@ import React, { useState, useGlobal } from "reactn";
 import client from "../api/client";
 import { Redirect } from "react-router-dom";
 import NumberFormat from "react-number-format";
+import "./CreateBet.css";
 
 const MoneyForm = ({ currentBet }) => {
   const [teamChoice, setTeamChoice] = useState(null);
@@ -39,6 +40,7 @@ const MoneyForm = ({ currentBet }) => {
   return (
     <>
       {betSelected && <Redirect to="/confirm-bet" />}
+      <div className="forms">
       <form onSubmit={handleSubmit}>
         <div>
           <label for="away">
@@ -52,7 +54,7 @@ const MoneyForm = ({ currentBet }) => {
             value="away"
             onChange={handleTeamChange}
             checked={teamChoice === "away"}
-          />
+            />
         </div>
         <strong>Odds: {currentBet.moneyLine.moneyLine.awayLine.decimal}</strong>
         <div>
@@ -69,12 +71,12 @@ const MoneyForm = ({ currentBet }) => {
               value="home"
               onChange={handleTeamChange}
               checked={teamChoice === "home"}
-            />
+              />
             {submitError && (
-              <em>
+              <div className="error-message">
                 You must select {currentBet.homeReferences.name} or{" "}
                 {currentBet.awayReferences.name}
-              </em>
+              </div>
             )}
           </label>
           <div>
@@ -93,7 +95,7 @@ const MoneyForm = ({ currentBet }) => {
               prefix={"$"}
               isNumericString={true}
               placeholder="Wager"
-            />
+              />
             <NumberFormat
               name="payOut"
               decimalScale="2"
@@ -102,11 +104,12 @@ const MoneyForm = ({ currentBet }) => {
               thousandSeparator={true}
               prefix={"$"}
               placeholder="Wager"
-            />
+              />
           </div>
           <button>Submit Bet</button>
         </div>
       </form>
+              </div>
     </>
   );
 };
@@ -146,6 +149,8 @@ const SpreadForm = ({ currentBet }) => {
   return (
     <>
       {betSelected && <Redirect to="/confirm-bet" />}
+      <div className="forms">
+
       <form onSubmit={handleSubmit}>
         <div>
           <label for="away">
@@ -159,7 +164,7 @@ const SpreadForm = ({ currentBet }) => {
             value="away"
             onChange={handleTeamChange}
             checked={teamChoice === "away"}
-          />
+            />
           <div>
             <strong>
               Odds: {currentBet.pointSpread.pointSpread.awayLine.decimal}
@@ -179,7 +184,7 @@ const SpreadForm = ({ currentBet }) => {
             value="home"
             onChange={handleTeamChange}
             checked={teamChoice === "home"}
-          />
+            />
           {submitError && (
             <em>
               You must select {currentBet.homeReferences.name} or{" "}
@@ -202,7 +207,7 @@ const SpreadForm = ({ currentBet }) => {
               prefix={"$"}
               isNumericString={true}
               placeholder="Wager"
-            />
+              />
             <NumberFormat
               name="payOut"
               decimalScale="2"
@@ -211,11 +216,12 @@ const SpreadForm = ({ currentBet }) => {
               thousandSeparator={true}
               prefix={"$"}
               placeholder="Wager"
-            />
+              />
           </div>
           <button>Submit Bet</button>
         </div>
       </form>
+              </div>
     </>
   );
 };
@@ -269,6 +275,8 @@ const OverUnderForm = ({ currentBet }) => {
   return (
     <>
       {betSelected && <Redirect to="/confirm-bet" />}
+      <div className="forms">
+
       <form onSubmit={handleSubmit}>
         <div>
           {currentBet.awayReferences.city} {currentBet.awayReferences.name}
@@ -323,7 +331,7 @@ const OverUnderForm = ({ currentBet }) => {
             prefix={"$"}
             isNumericString={true}
             placeholder="Wager"
-          />
+            />
           <NumberFormat
             name="payOut"
             value={wager * betOdds - wager}
@@ -332,10 +340,11 @@ const OverUnderForm = ({ currentBet }) => {
             thousandSeparator={true}
             prefix={"$"}
             placeholder="Wager"
-          />
+            />
         </div>
         <button>Submit Bet</button>
       </form>
+</div>
     </>
   );
 };
@@ -348,23 +357,25 @@ const CreateBet = () => {
 
   return (
     <>
-      <h1>Create a bet:</h1>
-      <button onClick={() => setBetType("spread")}>Spread</button>
-      <button onClick={() => setBetType("money")}>Money</button>
-      <button onClick={() => setBetType("over-under")}>Over/Under</button>
+      <h1>Create a bet</h1>
+    
+        <div className="forms-button-container">
+          <div className="form-button">
+          <button onClick={() => setBetType("spread")}>Spread</button>
+          </div>
+          <div className="form-button">
+          <button onClick={() => setBetType("money")}>Money</button>
+          </div>
+          <div className="form-button">
+          <button onClick={() => setBetType("over-under")}>Over/Under</button>
+          </div>
+        </div>
+    
       <div>
         {betType === "spread" && <SpreadForm currentBet={currentBet} />}
         {betType === "money" && <MoneyForm currentBet={currentBet} />}
         {betType === "over-under" && <OverUnderForm currentBet={currentBet} />}
         <div>
-          <NumberFormat
-            name="wager"
-            value={null}
-            displayType={"text"}
-            thousandSeparator={true}
-            prefix={"$"}
-            placeholder="Wager"
-          />
         </div>
       </div>
     </>
