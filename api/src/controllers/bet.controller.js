@@ -15,7 +15,7 @@ const router = AsyncRouter();
 router.post("/", [jwtMiddleware, handleValidationErrors], async (req, res) => {
   const bet = new Bet(req.body);
   bet.creator = req.user;
-  console.log(bet.creator)
+  console.log(bet)
   await bet.save();
 
   res.status(201).send(bet);

@@ -1,3 +1,3 @@
-make Payout field change based on Wager's field
-- know what state betType is in 
-- know what state Wager is in
+create delete button to clear data base
+write controller for newly formated bets data
+fix overUnder controller for confirm bets controller

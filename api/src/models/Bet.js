@@ -22,7 +22,15 @@ const betSchema = Schema(
       type: Number,
       required: true
     },
+    accepterOdds: {
+      type: Number,
+      required: true
+    },
     betType: {
+      type: String,
+      required: true
+    },
+    betTypeData: {
       type: Object,
       required: true
     },
@@ -36,6 +44,10 @@ const betSchema = Schema(
       required: true
     },
     wager: {
+      type: Number,
+      required: true
+    },
+    accepterPayOut: {
       type: Number,
       required: true
     },

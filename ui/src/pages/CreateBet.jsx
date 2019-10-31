@@ -18,6 +18,10 @@ const MoneyForm = ({ currentBet }) => {
     teamSide === true
       ? currentBet.moneyLine.moneyLine.homeLine.decimal
       : currentBet.moneyLine.moneyLine.awayLine.decimal;
+  const accepterOdds =
+    teamSide === true
+      ? currentBet.moneyLine.moneyLine.awayLine.decimal
+      : currentBet.moneyLine.moneyLine.homeLine.decimal;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -29,9 +33,12 @@ const MoneyForm = ({ currentBet }) => {
         game: currentBet.game,
         event_time: currentBet.game.startTime,
         odds: betOdds,
+        accepterOdds: accepterOdds,
         payOut: Math.round((wager * betOdds - wager) * 100) / 100,
+        accepterPayOut: Math.round((wager * accepterOdds - wager) * 100) / 100,
         wager: wager,
-        betType: currentBet.moneyLine
+        betType: "moneyLine",
+        betTypeData: currentBet.moneyLine
       });
       setBetSelected(true);
     } else setSubmitError(true);
@@ -41,75 +48,77 @@ const MoneyForm = ({ currentBet }) => {
     <>
       {betSelected && <Redirect to="/confirm-bet" />}
       <div className="forms">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label for="away">
-            {currentBet.awayReferences.city} {currentBet.awayReferences.name}
-            &nbsp;
-          </label>
-          <input
-            id="away"
-            type="radio"
-            name="money"
-            value="away"
-            onChange={handleTeamChange}
-            checked={teamChoice === "away"}
-            />
-        </div>
-        <strong>Odds: {currentBet.moneyLine.moneyLine.awayLine.decimal}</strong>
-        <div>
+        <form onSubmit={handleSubmit}>
           <div>
-            <strong>@</strong>
-          </div>
-          <label for="home">
-            {currentBet.homeReferences.city} {currentBet.homeReferences.name}
-            &nbsp;
+            <label for="away">
+              {currentBet.awayReferences.city} {currentBet.awayReferences.name}
+              &nbsp;
+            </label>
             <input
-              id="home"
+              id="away"
               type="radio"
               name="money"
-              value="home"
+              value="away"
               onChange={handleTeamChange}
-              checked={teamChoice === "home"}
-              />
-            {submitError && (
-              <div className="error-message">
-                You must select {currentBet.homeReferences.name} or{" "}
-                {currentBet.awayReferences.name}
-              </div>
-            )}
-          </label>
-          <div>
-            <strong>
-              Odds: {currentBet.moneyLine.moneyLine.homeLine.decimal}
-            </strong>
+              checked={teamChoice === "away"}
+            />
           </div>
+          <strong>
+            Odds: {currentBet.moneyLine.moneyLine.awayLine.decimal}
+          </strong>
           <div>
-            <NumberFormat
-              name="wager"
-              onValueChange={e => setWager(e.floatValue)}
-              decimalScale="2"
-              value={wager}
-              displayType={"input"}
-              thousandSeparator={true}
-              prefix={"$"}
-              isNumericString={true}
-              placeholder="Wager"
+            <div>
+              <strong>@</strong>
+            </div>
+            <label for="home">
+              {currentBet.homeReferences.city} {currentBet.homeReferences.name}
+              &nbsp;
+              <input
+                id="home"
+                type="radio"
+                name="money"
+                value="home"
+                onChange={handleTeamChange}
+                checked={teamChoice === "home"}
               />
-            <NumberFormat
-              name="payOut"
-              decimalScale="2"
-              value={wager * betOdds}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"$"}
-              placeholder="Wager"
+              {submitError && (
+                <div className="error-message">
+                  You must select {currentBet.homeReferences.name} or{" "}
+                  {currentBet.awayReferences.name}
+                </div>
+              )}
+            </label>
+            <div>
+              <strong>
+                Odds: {currentBet.moneyLine.moneyLine.homeLine.decimal}
+              </strong>
+            </div>
+            <div>
+              <NumberFormat
+                name="wager"
+                onValueChange={e => setWager(e.floatValue)}
+                decimalScale="2"
+                value={wager}
+                displayType={"input"}
+                thousandSeparator={true}
+                prefix={"$"}
+                isNumericString={true}
+                placeholder="Wager"
               />
+              <NumberFormat
+                name="payOut"
+                decimalScale="2"
+                value={wager * betOdds}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+                placeholder="Wager"
+              />
+            </div>
+            <button>Submit Bet</button>
           </div>
-          <button>Submit Bet</button>
-        </div>
-      </form>
-              </div>
+        </form>
+      </div>
     </>
   );
 };
@@ -124,10 +133,16 @@ const SpreadForm = ({ currentBet }) => {
 
   const teamSide = teamChoice === "home" ? true : false;
   const [submitError, setSubmitError] = useState(false);
+
   const betOdds =
     teamSide === true
       ? currentBet.pointSpread.pointSpread.homeLine.decimal
       : currentBet.pointSpread.pointSpread.awayLine.decimal;
+
+      const accepterOdds =
+      teamSide === true
+        ? currentBet.pointSpread.pointSpread.awayLine.decimal
+        : currentBet.pointSpread.pointSpread.homeLine.decimal;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -139,9 +154,12 @@ const SpreadForm = ({ currentBet }) => {
         game: currentBet.game,
         event_time: currentBet.game.startTime,
         odds: betOdds,
+        accepterOdds: accepterOdds,
         payOut: Math.round((wager * betOdds - wager) * 100) / 100,
+        accepterPayOut: Math.round((wager * accepterOdds - wager) * 100) / 100,
         wager: wager,
-        betType: currentBet.pointSpread
+        betType: "pointSpread",
+        betTypeData: currentBet.pointSpread
       });
       setBetSelected(true);
     } else setSubmitError(true);
@@ -150,78 +168,77 @@ const SpreadForm = ({ currentBet }) => {
     <>
       {betSelected && <Redirect to="/confirm-bet" />}
       <div className="forms">
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label for="away">
-            {currentBet.awayReferences.city} {currentBet.awayReferences.name}
-            &nbsp;
-            <strong>{currentBet.pointSpread.pointSpread.awaySpread}</strong>
-          </label>
-          <input
-            type="radio"
-            name="spread"
-            value="away"
-            onChange={handleTeamChange}
-            checked={teamChoice === "away"}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label for="away">
+              {currentBet.awayReferences.city} {currentBet.awayReferences.name}
+              &nbsp;
+              <strong>{currentBet.pointSpread.pointSpread.awaySpread}</strong>
+            </label>
+            <input
+              type="radio"
+              name="spread"
+              value="away"
+              onChange={handleTeamChange}
+              checked={teamChoice === "away"}
             />
-          <div>
-            <strong>
-              Odds: {currentBet.pointSpread.pointSpread.awayLine.decimal}
-            </strong>
+            <div>
+              <strong>
+                Odds: {currentBet.pointSpread.pointSpread.awayLine.decimal}
+              </strong>
+            </div>
           </div>
-        </div>
-        <strong>@</strong>
-        <div>
-          <label for="home">
-            {currentBet.homeReferences.city} {currentBet.homeReferences.name}
-            &nbsp;
-            <strong>{currentBet.pointSpread.pointSpread.homeSpread}</strong>
-          </label>
-          <input
-            type="radio"
-            name="spread"
-            value="home"
-            onChange={handleTeamChange}
-            checked={teamChoice === "home"}
+          <strong>@</strong>
+          <div>
+            <label for="home">
+              {currentBet.homeReferences.city} {currentBet.homeReferences.name}
+              &nbsp;
+              <strong>{currentBet.pointSpread.pointSpread.homeSpread}</strong>
+            </label>
+            <input
+              type="radio"
+              name="spread"
+              value="home"
+              onChange={handleTeamChange}
+              checked={teamChoice === "home"}
             />
-          {submitError && (
-            <em>
-              You must select {currentBet.homeReferences.name} or{" "}
-              {currentBet.awayReferences.name}
-            </em>
-          )}
-          <div>
-            <strong>
-              Odds: {currentBet.pointSpread.pointSpread.homeLine.decimal}
-            </strong>
-          </div>
-          <div>
-            <NumberFormat
-              name="wager"
-              decimalScale="2"
-              onValueChange={e => setWager(e.floatValue)}
-              value={wager}
-              displayType={"input"}
-              thousandSeparator={true}
-              prefix={"$"}
-              isNumericString={true}
-              placeholder="Wager"
+            {submitError && (
+              <em>
+                You must select {currentBet.homeReferences.name} or{" "}
+                {currentBet.awayReferences.name}
+              </em>
+            )}
+            <div>
+              <strong>
+                Odds: {currentBet.pointSpread.pointSpread.homeLine.decimal}
+              </strong>
+            </div>
+            <div>
+              <NumberFormat
+                name="wager"
+                decimalScale="2"
+                onValueChange={e => setWager(e.floatValue)}
+                value={wager}
+                displayType={"input"}
+                thousandSeparator={true}
+                prefix={"$"}
+                isNumericString={true}
+                placeholder="Wager"
               />
-            <NumberFormat
-              name="payOut"
-              decimalScale="2"
-              value={wager * betOdds}
-              displayType={"text"}
-              thousandSeparator={true}
-              prefix={"$"}
-              placeholder="Wager"
+              <NumberFormat
+                name="payOut"
+                decimalScale="2"
+                value={wager * betOdds}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+                placeholder="Wager"
               />
+            </div>
+            <button>Submit Bet</button>
           </div>
-          <button>Submit Bet</button>
-        </div>
-      </form>
-              </div>
+        </form>
+      </div>
     </>
   );
 };
@@ -237,6 +254,10 @@ const OverUnderForm = ({ currentBet }) => {
   const teamSide = overUnder === "home" ? true : false;
 
   const betOdds =
+    teamSide === true
+      ? currentBet.overUnder.overUnder.overLine.decimal
+      : currentBet.overUnder.overUnder.underLine.decimal;
+      const accepterOdds =
     teamSide === true
       ? currentBet.overUnder.overUnder.overLine.decimal
       : currentBet.overUnder.overUnder.underLine.decimal;
@@ -264,9 +285,12 @@ const OverUnderForm = ({ currentBet }) => {
         game: currentBet.game,
         event_time: currentBet.game.startTime,
         odds: betOdds,
+        accepterOdds: accepterOdds,
         payOut: Math.round((wager * betOdds - wager) * 100) / 100,
+        accepterPayOut: Math.round((wager * accepterOdds - wager) * 100) / 100,
         wager: wager,
-        betType: currentBet.overUnder.overUnder
+        betType: "overUnder",
+        betTypeData: currentBet.overUnder
       });
       setBetSelected(true);
     } else setSubmitError(true);
@@ -276,75 +300,74 @@ const OverUnderForm = ({ currentBet }) => {
     <>
       {betSelected && <Redirect to="/confirm-bet" />}
       <div className="forms">
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          {currentBet.awayReferences.city} {currentBet.awayReferences.name}
-          &nbsp;
-          <strong>@</strong>
-          <div></div>
+        <form onSubmit={handleSubmit}>
           <div>
-            {currentBet.homeReferences.city} {currentBet.homeReferences.name}
-          </div>
-          <div>Total points: {currentBet.overUnder.overUnder.overUnder}</div>
-          <div>
+            {currentBet.awayReferences.city} {currentBet.awayReferences.name}
+            &nbsp;
+            <strong>@</strong>
+            <div></div>
+            <div>
+              {currentBet.homeReferences.city} {currentBet.homeReferences.name}
+            </div>
+            <div>Total points: {currentBet.overUnder.overUnder.overUnder}</div>
+            <div>
+              <label>
+                Over{" "}
+                <strong>
+                  Odds: {currentBet.overUnder.overUnder.overLine.decimal}
+                </strong>
+              </label>
+              <input
+                id="home"
+                type="radio"
+                name="homeAway"
+                value="home"
+                onChange={handleOverUnderChange}
+                checked={overUnder === "home"}
+              />
+            </div>
             <label>
-              Over{" "}
+              Under
               <strong>
-                Odds: {currentBet.overUnder.overUnder.overLine.decimal}
+                {" "}
+                Odds: {currentBet.overUnder.overUnder.underLine.decimal}
               </strong>
             </label>
             <input
-              id="home"
-              type="radio"
+              id="away"
               name="homeAway"
-              value="home"
+              type="radio"
+              value="away"
               onChange={handleOverUnderChange}
-              checked={overUnder === "home"}
+              checked={overUnder === "away"}
+            />
+            {submitError && <em>You must select Over or Under</em>}
+          </div>
+          <div>
+            <NumberFormat
+              name="wager"
+              onValueChange={e => setWager(e.floatValue)}
+              value={wager}
+              decimalScale="2"
+              displayType={"input"}
+              thousandSeparator={true}
+              prefix={"$"}
+              isNumericString={true}
+              placeholder="Wager"
+            />
+            <NumberFormat
+              name="payOut"
+              value={wager * betOdds - wager}
+              decimalScale="2"
+              displayType={"text"}
+              thousandSeparator={true}
+              prefix={"$"}
+              placeholder="Wager"
             />
           </div>
-          <label>
-            Under
-            <strong>
-              {" "}
-              Odds: {currentBet.overUnder.overUnder.underLine.decimal}
-            </strong>
-          </label>
-          <input
-            id="away"
-            name="homeAway"
-            type="radio"
-            value="away"
-            onChange={handleOverUnderChange}
-            checked={overUnder === "away"}
-          />
-          {submitError && <em>You must select Over or Under</em>}
-        </div>
-        <div>
-          <NumberFormat
-            name="wager"
-            onValueChange={e => setWager(e.floatValue)}
-            value={wager}
-            decimalScale="2"
-            displayType={"input"}
-            thousandSeparator={true}
-            prefix={"$"}
-            isNumericString={true}
-            placeholder="Wager"
-            />
-          <NumberFormat
-            name="payOut"
-            value={wager * betOdds - wager}
-            decimalScale="2"
-            displayType={"text"}
-            thousandSeparator={true}
-            prefix={"$"}
-            placeholder="Wager"
-            />
-        </div>
-        <button>Submit Bet</button>
-      </form>
-</div>
+          <button>Submit Bet</button>
+        </form>
+      </div>
     </>
   );
 };
@@ -358,25 +381,24 @@ const CreateBet = () => {
   return (
     <>
       <h1>Create a bet</h1>
-    
-        <div className="forms-button-container">
-          <div className="form-button">
+
+      <div className="forms-button-container">
+        <div className="form-button">
           <button onClick={() => setBetType("spread")}>Spread</button>
-          </div>
-          <div className="form-button">
-          <button onClick={() => setBetType("money")}>Money</button>
-          </div>
-          <div className="form-button">
-          <button onClick={() => setBetType("over-under")}>Over/Under</button>
-          </div>
         </div>
-    
+        <div className="form-button">
+          <button onClick={() => setBetType("money")}>Money</button>
+        </div>
+        <div className="form-button">
+          <button onClick={() => setBetType("over-under")}>Over/Under</button>
+        </div>
+      </div>
+
       <div>
         {betType === "spread" && <SpreadForm currentBet={currentBet} />}
         {betType === "money" && <MoneyForm currentBet={currentBet} />}
         {betType === "over-under" && <OverUnderForm currentBet={currentBet} />}
-        <div>
-        </div>
+        <div></div>
       </div>
     </>
   );
