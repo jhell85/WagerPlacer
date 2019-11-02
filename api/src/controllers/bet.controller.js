@@ -32,4 +32,11 @@ router.get("/", async (req, res) => {
   res.send(bet);
 })
 
+router.delete("/:_id", async (req, res) => {
+  const bet = await Bet.findOne({_id: req.params._id})
+  if(!bet) return res.sendStatus(404);
+  await bet.remove();
+  res.send(bet);
+})
+
 module.exports = router;

@@ -6,12 +6,12 @@ const ConfirmBetForm = () => {
   const { 0: confirmBet } = useGlobal("confirmBet");
   const { 0: token } = useGlobal("token");
   const betParameters = () => {
-    if (confirmBet.betType.hasOwnProperty("overUnder"))
+    if (confirmBet.betType === "overUnder")
       if (confirmBet.homeAway === true)
         return (
           <div className="center-wrapper">
             <div className="text">
-              total combined points to be over {confirmBet.betType.overUnder}{" "}
+              total combined points to be over {confirmBet.betTypeData.overUnder.overUnder}{" "}
               points
             </div>
             <div>
@@ -23,7 +23,7 @@ const ConfirmBetForm = () => {
         return (
           <div className="center-wrapper">
             <div className="text">
-              total combined points to be under {confirmBet.betType.overUnder}{" "}
+              total combined points to be under {confirmBet.betTypeData.overUnder.overUnder}{" "}
               points
             </div>
             <div>
@@ -31,13 +31,13 @@ const ConfirmBetForm = () => {
             </div>
           </div>
         );
-    else if (confirmBet.betType.hasOwnProperty("pointSpread"))
+    else if (confirmBet.betType === "pointSpread")
       if (confirmBet.homeAway === true)
         return (
           <div className="center-wrapper">
             <div className="text">
               {confirmBet.homeReferences.city} {confirmBet.homeReferences.name}{" "}
-              at home {confirmBet.betType.pointSpread.homeSpread}
+              at home {confirmBet.betTypeData.pointSpread.homeSpread}
             </div>
             <div>
               wagering: {confirmBet.wager} to win: {confirmBet.payOut}
@@ -49,7 +49,7 @@ const ConfirmBetForm = () => {
           <div className="center-wrapper">
             <div className="text">
               {confirmBet.awayReferences.city} {confirmBet.awayReferences.name}{" "}
-              {confirmBet.betType.pointSpread.awaySpread} on the road
+              {confirmBet.betTypeData.pointSpread.awaySpread} on the road
             </div>
             <div>
               wagering: {confirmBet.wager} to win: {confirmBet.payOut}
