@@ -122,6 +122,7 @@ const MoneyForm = ({ currentBet }) => {
     </>
   );
 };
+
 const SpreadForm = ({ currentBet }) => {
   const [teamChoice, setTeamChoice] = useState(null);
   const handleTeamChange = event => {
@@ -139,10 +140,10 @@ const SpreadForm = ({ currentBet }) => {
       ? currentBet.pointSpread.pointSpread.homeLine.decimal
       : currentBet.pointSpread.pointSpread.awayLine.decimal;
 
-      const accepterOdds =
-      teamSide === true
-        ? currentBet.pointSpread.pointSpread.awayLine.decimal
-        : currentBet.pointSpread.pointSpread.homeLine.decimal;
+  const accepterOdds =
+    teamSide === true
+      ? currentBet.pointSpread.pointSpread.awayLine.decimal
+      : currentBet.pointSpread.pointSpread.homeLine.decimal;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -242,6 +243,7 @@ const SpreadForm = ({ currentBet }) => {
     </>
   );
 };
+
 const OverUnderForm = ({ currentBet }) => {
   const [overUnder, setOverUnder] = useState(null);
   const handleOverUnderChange = event => {
@@ -257,7 +259,7 @@ const OverUnderForm = ({ currentBet }) => {
     teamSide === true
       ? currentBet.overUnder.overUnder.overLine.decimal
       : currentBet.overUnder.overUnder.underLine.decimal;
-      const accepterOdds =
+  const accepterOdds =
     teamSide === true
       ? currentBet.overUnder.overUnder.overLine.decimal
       : currentBet.overUnder.overUnder.underLine.decimal;
@@ -389,9 +391,11 @@ const CreateBet = () => {
         <div className="form-button">
           <button onClick={() => setBetType("money")}>Money</button>
         </div>
-        <div className="form-button">
-          <button onClick={() => setBetType("over-under")}>Over/Under</button>
-        </div>
+        {currentBet.OverUnder && (
+          <div className="form-button">
+            <button onClick={() => setBetType("over-under")}>Over/Under</button>
+          </div>
+        )}
       </div>
 
       <div>
