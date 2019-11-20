@@ -4,6 +4,8 @@ import { Redirect } from "react-router-dom";
 import NumberFormat from "react-number-format";
 import "./CreateBet.css";
 
+
+
 const MoneyForm = ({ currentBet }) => {
   const [teamChoice, setTeamChoice] = useState(null);
   const handleTeamChange = e => setTeamChoice(e.target.value);
@@ -122,7 +124,6 @@ const MoneyForm = ({ currentBet }) => {
     </>
   );
 };
-
 const SpreadForm = ({ currentBet }) => {
   const [teamChoice, setTeamChoice] = useState(null);
   const handleTeamChange = event => {
@@ -385,24 +386,42 @@ const CreateBet = () => {
       <h1>Create a bet</h1>
 
       <div className="forms-button-container">
+      {currentBet.pointSpread && (
         <div className="form-button">
           <button onClick={() => setBetType("spread")}>Spread</button>
         </div>
+      )}
+        {currentBet.moneyLine && (
         <div className="form-button">
           <button onClick={() => setBetType("money")}>Money</button>
         </div>
-        {currentBet.OverUnder && (
+        )}
+        {currentBet.overUnder && (
           <div className="form-button">
             <button onClick={() => setBetType("over-under")}>Over/Under</button>
           </div>
         )}
+        
       </div>
 
       <div>
+      {currentBet.pointSpread && (
+        <div>
         {betType === "spread" && <SpreadForm currentBet={currentBet} />}
+        </div>
+      )}
+        {currentBet.moneyLine && (
+          <div>
         {betType === "money" && <MoneyForm currentBet={currentBet} />}
+        </div>
+        )}
+        
+        {currentBet.overUnder && (
+          <div>
         {betType === "over-under" && <OverUnderForm currentBet={currentBet} />}
-        <div></div>
+        </div>
+        )}
+       
       </div>
     </>
   );
