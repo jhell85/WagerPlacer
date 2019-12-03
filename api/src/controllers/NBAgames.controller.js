@@ -15,3 +15,10 @@ const getGames = async () => {
   return data
 
 }
+const router = AsyncRouter()
+
+router.get("/", async (req, res) => {
+  const games = await getGames();
+  res.send(games);
+})
+module.exports = router;
